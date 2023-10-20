@@ -8,6 +8,7 @@ import logging
 from src.test import test_routes
 from src.openai import openai_routes
 from src.assessment import assessment_routes
+from src.templates import template_routes
 
 # Flask
 from flask import Flask
@@ -51,5 +52,6 @@ def create_app(test_config=None):
     app.register_blueprint(test_routes)
     app.register_blueprint(openai_routes)
     app.register_blueprint(assessment_routes)
+    app.register_blueprint(template_routes)
 
     return app
