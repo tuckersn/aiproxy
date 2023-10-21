@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    .result-form {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    .result-form > textarea {
+        flex: 1;
+    }
+</style>
+<script type="text/javascript">
+window.submitAssessment = () => {
+    console.log('Submitting');
+
+    const params = new URLSearchParams();
+    params.append('code', document.getElementById('formCode').value);
+    params.append('prompt', document.getElementById('formPrompt').value);
+    params.append('rubric', document.getElementById('formRubric').value);
+
+    const result = document.getElementById('dummyFormResult');
+    result.value = 'Submission sent, please wait...';
+    
+    fetch('/assessment', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: params.toString()
+    })
+    .then(res => res.json())
+    .then(res => {
+        result.value = JSON.stringify(res, null, 2);
+    })
+    .catch(err => {
+        result.value = err;
+    });
+}
+</script>
+
+<br/>
+<h1>Debug Interface<h1>
+<div style="display: flex">
+    <div style="flex: 1">
+
+        <div class="form-group">
+            <label for="formCode">Code</label>
+            <textarea class="form-control" id="formCode" rows="10">{{ code|e }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="formPrompt">Prompt</label>
+            <textarea class="form-control" id="formPrompt" rows="10">{{ prompt|e }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="formRubric">Rubric</label>
+            <textarea class="form-control" id="formRubric" rows="10">{{ rubric|e }}</textarea>
+        </div>
+
+        <br/>
+        <button type="button" class="btn btn-primary btn-lg" onclick="window.submitAssessment()">Submit for Assesment</button>
+    </div>
+
+    <div style="flex: 1; padding-left: 16px">
+        <div class="form-group result-form">
+            <label for="dummyFormResult">Result</label>
+            <textarea class="form-control" id="dummyFormResult">-- waiting for submission --</textarea>
+        </div>
+    </div>
+<div>
+{% endblock %}
