@@ -1,7 +1,5 @@
-# These routes (/htmx and the root /) issue HTML from the /templates directory.
-# / to templates/index.html
-# /htmx/authorized to templates/authorized.html
-# /htmx/grading to templates/grading.html
+# These routes issue HTML from HTML templates in the /templates directory.
+# /debug_interface renders templates/debug_interface.html
 
 from flask import Blueprint, request, render_template
 
